@@ -74,6 +74,27 @@ exports.atualizar = async(req, res) => {
         else {
             res.status(500).json({message: "Erro nao identificado"});            
         }
+    }    
+}
+
+exports.buscarPorUsername = async (req, res) => {
+    const query = req.query;
+    if(query && query.username){ 
+        try{
+            const usuario = await usuarioNegocio.buscarPorUsername(query.username);
+            res.json(usuario);                
+        }
+        catch (err) {
+            if(err.status) {
+                res.status(err.status).json(err);
+            }
+            else {
+                res.status(500).json({message: "Erro nao identificado"});            
+            }
+        }
     }
-    
+    else {
+        //Bad Request
+        res.status(400).json({message: "Falta o parametro de busca username"});
+    }
 }

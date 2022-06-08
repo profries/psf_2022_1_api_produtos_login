@@ -111,4 +111,26 @@ exports.deletar = async (id) => {
     }
 }
 
+exports.buscarPorUsername = async (username) => {
+    const sql = "SELECT * FROM usuarios WHERE username=$1";
+    const values = [username];
+
+    const cliente = new Client(conexao);
+    cliente.connect();
+
+    try{
+        const resultado = await cliente.query(sql, values);
+        cliente.end();
+        return(resultado.rows[0]);        
+    }
+    catch (err) {
+        let error = {};
+        error.name = err.name;
+        error.message = err.message;
+        error.status = 500; 
+        throw error; 
+    }
+
+}
+
 

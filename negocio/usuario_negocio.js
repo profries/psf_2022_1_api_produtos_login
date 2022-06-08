@@ -97,3 +97,21 @@ exports.deletar = async (id) => {
         throw err;
     }
 }
+
+exports.buscarPorUsername = async (username) => {
+    try {
+        const usuario = await usuarioRepository.buscarPorUsername(username);
+        if(!usuario){
+            let erro = new Error();
+            erro.message = "Usuario nao encontrado";
+            erro.status = 404;
+            throw erro;
+        }
+        else {
+            return usuario;
+        }
+    }
+    catch(err) {
+        throw err;
+    }
+}
