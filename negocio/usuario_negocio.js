@@ -115,3 +115,23 @@ exports.buscarPorUsername = async (username) => {
         throw err;
     }
 }
+
+exports.validarUsuario = async (userLogin) => {
+    try {
+        if(userLogin && userLogin.username && userLogin.senha) {
+            const usuario = await usuarioRepository.buscarPorUsername(userLogin.username);
+
+            if(usuario && usuario.senha == userLogin.senha){
+                return usuario;
+            }
+        }
+
+        let erro = new Error();
+        erro.message = "Usuario ou senha invalidos";
+        erro.status = 401;
+        throw erro;
+    }
+    catch(err) {
+        throw err;
+    }
+}

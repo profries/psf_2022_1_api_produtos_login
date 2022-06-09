@@ -1,5 +1,7 @@
 const usuarioNegocio = require('../negocio/usuario_negocio');
 
+const jwt = require('jsonwebtoken');
+
 exports.listar = async (req, res) => {
     try{ 
         const lista = await usuarioNegocio.listar();
@@ -98,3 +100,29 @@ exports.buscarPorUsername = async (req, res) => {
         res.status(400).json({message: "Falta o parametro de busca username"});
     }
 }
+
+//Verificar com o negocio para validar o usuario,
+//e controller trabalhar na parte de Token
+exports.realizarLogin = async (req, res) => {
+    const userLogin = req.body;
+    try { 
+        const usuario = await usuarioNegocio.validarUsuario(userLogin);
+
+        const token = jwt.sign({
+            id: usuario.id,
+            nome: usuario.nome
+        }, "Senac@2022", { expiresIn: '1h' });
+        res.status(201).json({"token": token});
+    }
+    catch(err) {
+        if(err.status) {
+            res.status(err.status).json(err);
+        }
+        else {
+            res.status(500).json({message: "Erro nao identificado"});            
+        }
+    }
+}
+
+
+

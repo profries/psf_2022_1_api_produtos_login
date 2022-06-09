@@ -12,6 +12,9 @@ app.use('/api/produtos', produtoRota);
 const usuarioRota = require('./rotas/usuario_rota');
 app.use('/api/usuarios', usuarioRota);
 
+const loginRota = require('./rotas/login_rota');
+app.use('/api/login', loginRota);
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
